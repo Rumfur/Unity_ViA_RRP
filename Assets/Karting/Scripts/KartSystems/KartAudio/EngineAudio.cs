@@ -15,7 +15,7 @@ namespace KartGame.KartSystems
         [Tooltip("The minimum possible RPM of the engine.")]
         public float minRPM = 900;
         [Tooltip("The maximum possible RPM of the engine.")]
-        public float maxRPM = 10000;
+        public float maxRPM = 20000;
         [Space]
         [Tooltip("Increases randomness in engine audio.")]
         public float lumpyCamFactor = 0.05f;
@@ -69,7 +69,7 @@ namespace KartGame.KartSystems
             if (Time.timeScale < 1)
                 m_Volume = 0;
             else
-                m_Volume = 1;
+                m_Volume = 2;
         }
 
         void OnAudioFilterRead(float[] data, int channels)
