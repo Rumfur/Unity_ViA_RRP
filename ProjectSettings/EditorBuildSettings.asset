@@ -12,6 +12,9 @@ EditorBuildSettings:
     path: Assets/Karting/Scenes/MainScene.unity
     guid: 92786e23da2af4a4f8803aaf44c47121
   - enabled: 1
+    path: Assets/Karting/Scenes/MainScene2.unity
+    guid: 4911b45b637b36f46a239cf46cddb0f5
+  - enabled: 1
     path: Assets/Karting/Scenes/LoseScene.unity
     guid: 9c449e01147824b419cda406398fb2e7
   - enabled: 1

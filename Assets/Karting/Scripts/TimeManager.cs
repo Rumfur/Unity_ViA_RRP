@@ -10,7 +10,7 @@ public class TimeManager : MonoBehaviour
     public float TimeRemaining { get; private set; }
     public bool IsOver { get; private set; }
 
-    private bool raceStarted;
+    private static bool raceStarted;
 
     public static Action<float> OnAdjustTime;
     public static Action<int, bool, GameMode> OnSetTime;
@@ -20,7 +20,6 @@ public class TimeManager : MonoBehaviour
         IsFinite = false;
         TimeRemaining = TotalTime;
     }
-
 
     void OnEnable()
     {
@@ -59,6 +58,10 @@ public class TimeManager : MonoBehaviour
                 IsOver = true;
             }
         }
+    }
+
+    public static bool getRaceStatus(){
+        return raceStarted;
     }
 
     public void StartRace()

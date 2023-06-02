@@ -18,14 +18,13 @@ public class ObjectiveReachTargets : Objective
 
     IEnumerator Start()
     {
-   
         TimeManager.OnSetTime(totalTimeInSecs, isTimed, gameMode);
         
         yield return new WaitForEndOfFrame();
 
         title = "Collect " +
                 (mustCollectAllPickups ? "all the" : pickupsToCompleteObjective.ToString()) + " " +
-                targetName + "s";
+                targetName + "s" + " and get 1st place.";
         
         if (mustCollectAllPickups)
             pickupsToCompleteObjective = NumberOfPickupsTotal;

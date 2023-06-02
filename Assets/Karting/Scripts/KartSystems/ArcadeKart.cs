@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.VFX;
+using TMPro;
 
 namespace KartGame.KartSystems
 {
@@ -15,6 +16,10 @@ namespace KartGame.KartSystems
             public float ElapsedTime;
             public float MaxTime;
         }
+
+        public TextMeshProUGUI speedDisplay;
+        public new Animator animation;
+        public RotateLerp speedometer;
 
         [System.Serializable]
         public struct Stats
@@ -262,6 +267,7 @@ namespace KartGame.KartSystems
                     Instantiate(NozzleVFX, nozzle, false);
                 }
             }
+            SceneLoadManager.setLastScene();
         }
 
         void AddTrailToWheel(WheelCollider wheel)
@@ -378,6 +384,7 @@ namespace KartGame.KartSystems
             transform.rotation = Quaternion.Euler(euler);
         }
 
+        private float previousSpeed = 0;
         public float LocalSpeed()
         {
             if (m_CanMove)
@@ -386,6 +393,10 @@ namespace KartGame.KartSystems
                 if (Mathf.Abs(dot) > 0.1f)
                 {
                     float speed = Rigidbody.velocity.magnitude;
+                    speedDisplay.text = speed.ToString("F0");
+                    animation.speed = speed / 10;
+                    speedometer.setRotationLevel(speed / m_FinalStats.TopSpeed);
+                    previousSpeed = speed;
                     return dot < 0 ? -(speed / m_FinalStats.ReverseSpeed) : (speed / m_FinalStats.TopSpeed);
                 }
                 return 0f;
@@ -413,7 +424,7 @@ namespace KartGame.KartSystems
             }
         }
 
-        void MoveVehicle(bool accelerate, bool brake, float turnInput)
+        public void MoveVehicle(bool accelerate, bool brake, float turnInput)
         {
             float accelInput = (accelerate ? 1.0f : 0.0f) - (brake ? 1.0f : 0.0f);
 
@@ -525,6 +536,7 @@ namespace KartGame.KartSystems
                         ActivateDriftVFX(true);
                     }
                 }
+                IsDrifting = true;
 
                 if (IsDrifting)
                 {

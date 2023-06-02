@@ -15,6 +15,8 @@ public class InGameMenuManager : MonoBehaviour
     public Toggle framerateToggle;
     [Tooltip("GameObject for the controls")]
     public GameObject controlImage;
+    [Tooltip("GameObject for the loading canvas")]
+    public GameObject loadingCanvas;
 
     //PlayerInputHandler m_PlayerInputsHandler;
     FramerateCounter m_FramerateCounter;
@@ -45,6 +47,12 @@ public class InGameMenuManager : MonoBehaviour
             if (controlImage.activeSelf)
             {
                 controlImage.SetActive(false);
+                return;
+            }
+
+            if (loadingCanvas.activeSelf)
+            {
+                loadingCanvas.SetActive(false);
                 return;
             }
 
@@ -108,5 +116,10 @@ public class InGameMenuManager : MonoBehaviour
     public void OnShowControlButtonClicked(bool show)
     {
         controlImage.SetActive(show);
+    }
+
+    public void OnLoadButtonClicked(bool show)
+    {
+        loadingCanvas.SetActive(show);
     }
 }

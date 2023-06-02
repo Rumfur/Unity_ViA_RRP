@@ -12,5 +12,10 @@ namespace KartGame.UI
         {
             SceneManager.LoadSceneAsync(SceneName);
         }
+
+        public static void loadLastScene()
+        {
+            SceneManager.LoadSceneAsync(SceneLoadManager.getLastActiveScene());
+        }
     }
 }

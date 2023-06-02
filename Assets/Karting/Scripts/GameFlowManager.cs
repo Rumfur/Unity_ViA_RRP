@@ -10,7 +10,7 @@ public class GameFlowManager : MonoBehaviour
 {
     [Header("Parameters")]
     [Tooltip("Duration of the fade-to-black at the end of the game")]
-    public float endSceneLoadDelay = 3f;
+    public float endSceneLoadDelay = 1f;
     [Tooltip("The canvas group of the fade-to-black screen")]
     public CanvasGroup endGameFadeCanvasGroup;
 
@@ -18,9 +18,9 @@ public class GameFlowManager : MonoBehaviour
     [Tooltip("This string has to be the name of the scene you want to load when winning")]
     public string winSceneName = "WinScene";
     [Tooltip("Duration of delay before the fade-to-black, if winning")]
-    public float delayBeforeFadeToBlack = 4f;
+    public float delayBeforeFadeToBlack = 2f;
     [Tooltip("Duration of delay before the win message")]
-    public float delayBeforeWinMessage = 2f;
+    public float delayBeforeWinMessage = 1f;
     [Tooltip("Sound played on win")]
     public AudioClip victorySound;
 
@@ -107,8 +107,8 @@ public class GameFlowManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(0.2f);
         for (int i = 0; i < m_ObjectiveManager.Objectives.Count; i++)
         {
-           if (m_ObjectiveManager.Objectives[i].displayMessage)m_ObjectiveManager.Objectives[i].displayMessage.Display();
-           yield return new WaitForSecondsRealtime(1f);
+            if (m_ObjectiveManager.Objectives[i].displayMessage)m_ObjectiveManager.Objectives[i].displayMessage.Display();
+            yield return new WaitForSecondsRealtime(1f);
         }
     }
 
@@ -130,7 +130,7 @@ public class GameFlowManager : MonoBehaviour
                 AudioUtility.SetMasterVolume(volume);
 
                 // See if it's time to load the end scene (after the delay)
-                if (Time.time >= m_TimeLoadEndGameScene)
+                if (Time.time >= m_TimeLoadEndGameScene || AIWinStatus.restartGame)
                 {
                     SceneManager.LoadScene(m_SceneToLoad);
                     gameState = GameState.Play;
@@ -142,7 +142,7 @@ public class GameFlowManager : MonoBehaviour
             if (m_ObjectiveManager.AreAllObjectivesCompleted())
                 EndGame(true);
 
-            if (m_TimeManager.IsFinite && m_TimeManager.IsOver)
+            if (m_TimeManager.IsFinite && m_TimeManager.IsOver || AIWinStatus.AIWin || AIWinStatus.restartGame)
                 EndGame(false);
         }
     }
@@ -176,12 +176,16 @@ public class GameFlowManager : MonoBehaviour
         }
         else
         {
-            m_SceneToLoad = loseSceneName;
-            m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay + delayBeforeFadeToBlack;
-
-            // create a game message
-            loseDisplayMessage.delayBeforeShowing = delayBeforeWinMessage;
+            
+            if (AIWinStatus.restartGame) {
+                m_SceneToLoad = SceneLoadManager.sceneNameToLoad;
+            } else {
+                m_SceneToLoad = loseSceneName;
+                m_TimeLoadEndGameScene = Time.time + endSceneLoadDelay + delayBeforeFadeToBlack;
+                            loseDisplayMessage.delayBeforeShowing = delayBeforeWinMessage;
             loseDisplayMessage.gameObject.SetActive(true);
+                // create a game message
+            }
         }
     }
 }
